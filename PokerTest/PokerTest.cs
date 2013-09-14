@@ -12,11 +12,15 @@ namespace PokerTest
     public class PokerTest
     {
         [Test(Description = "This test create a card and check its attributes")]
-        public void CreateAndCheckACard()
+        public void CreateAndCheckACard(
+            [Values(CardValue.Two, CardValue.Three, CardValue.Four, CardValue.Five, CardValue.Six,
+                CardValue.Seven, CardValue.Eight, CardValue.Nine, CardValue.Ten,
+                CardValue.Jack, CardValue.Queen, CardValue.King, CardValue.Ace)] CardValue value,
+            [Values(CardSuit.Spades, CardSuit.Hearts, CardSuit.Diamonds, CardSuit.Clubs)] CardSuit suit)
         {
-            var card = new Card(1, CardSuit.Spades);
-            Assert.AreEqual(1, card.Value);
-            Assert.AreEqual(CardSuit.Spades, card.Suit);
+            var card = new Card(value, suit);
+            Assert.AreEqual(value, card.Value);
+            Assert.AreEqual(suit, card.Suit);
         }
     }
 }

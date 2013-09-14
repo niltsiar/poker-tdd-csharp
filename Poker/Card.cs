@@ -14,12 +14,29 @@ namespace Poker
         Clubs
     };
 
+    public enum CardValue
+    {
+        Two,
+        Three,
+        Four,
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Jack,
+        Queen,
+        King,
+        Ace
+    };
+
     public class Card
     {
-        public int Value { get; private set; }
+        public CardValue Value { get; private set; }
         public CardSuit Suit { get; private set; }
 
-        public Card(int value, CardSuit suit)
+        public Card(CardValue value, CardSuit suit)
         {
             Value = value;
             Suit = suit;
