@@ -7,6 +7,14 @@ namespace PokerTest
     [TestFixture]
     public class PokerTest
     {
+        private Hand _hand;
+
+        [SetUp]
+        public void TestInit()
+        {
+            _hand = new Hand();
+        }
+
         [Test(Description = "This test creates a card and checks its attributes")]
         public void CreateAndCheckACard(
             [Values(CardValue.Two, CardValue.Three, CardValue.Four, CardValue.Five, CardValue.Six,
@@ -22,29 +30,37 @@ namespace PokerTest
         [Test(Description = "This test adds cards to a hand")]
         public void AddCardsToAHand()
         {
-            var hand = new Hand();
             var card = new Card(CardValue.Ace, CardSuit.Spades);
-            hand.AddCard(card);
-            Assert.AreEqual(1, hand.Cards.Count());
+            _hand.AddCard(card);
+            Assert.AreEqual(1, _hand.Cards.Count());
         }
 
         [Test(Description = "This test fails when adding more than 5 cards to a hand")]
         [ExpectedException("Poker.Exceptions.TooManyCardsException")]
         public void LaunchExceptionWhenAddingMoreThanFiveCards()
         {
-            var hand = new Hand();
             var card = new Card(CardValue.Ace, CardSuit.Spades);
-            hand.AddCard(card);
+            _hand.AddCard(card);
             card = new Card(CardValue.Eight, CardSuit.Diamonds);
-            hand.AddCard(card);
+            _hand.AddCard(card);
             card = new Card(CardValue.Five, CardSuit.Hearts);
-            hand.AddCard(card);
+            _hand.AddCard(card);
             card = new Card(CardValue.Jack, CardSuit.Clubs);
-            hand.AddCard(card);
+            _hand.AddCard(card);
             card = new Card(CardValue.King, CardSuit.Clubs);
-            hand.AddCard(card);
+            _hand.AddCard(card);
             card = new Card(CardValue.Queen, CardSuit.Spades);
-            hand.AddCard(card);
+            _hand.AddCard(card);
+        }
+
+        [Test(Description = "This test fails when adding a duplicate card to a hand")]
+        [ExpectedException("Poker.Exceptions.DuplicatedCardException")]
+        public void LaunchExcentionWhenAddingDuplicatedCard()
+        {
+            var card1 = new Card(CardValue.Ace, CardSuit.Spades);
+            _hand.AddCard(card1);
+            var card2 = new Card(CardValue.Ace, CardSuit.Spades);
+            _hand.AddCard(card2);
         }
     }
 }

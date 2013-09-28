@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Poker.Exceptions;
 
 namespace Poker
@@ -18,6 +19,11 @@ namespace Poker
         {
             if (5 == _cards.Count)
                 throw new TooManyCardsException();
+
+            if (Cards.Any(tempCard => tempCard.Suit == card.Suit && tempCard.Value == card.Value))
+            {
+                throw  new DuplicatedCardException();
+            }
 
             _cards.Add(card);
         }
