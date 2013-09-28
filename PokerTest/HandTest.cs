@@ -10,7 +10,7 @@ namespace PokerTest
         private Hand _hand;
 
         [SetUp]
-        public void TestInit()
+        public void InitTests()
         {
             _hand = new Hand();
         }
