@@ -16,7 +16,8 @@ namespace Poker
             Straight,
             Flush,
             FullHouse,
-            FourOfAKind
+            FourOfAKind,
+            StraightFlush
         }
 
         public static PokerPlay CheckPlay(Hand hand)
@@ -25,10 +26,6 @@ namespace Poker
                 throw new NotEnoughCardsException();
 
             var play = PokerPlay.None;
-
-            if (IsFlush(hand)) play = PokerPlay.Flush;
-
-            if (PokerPlay.Flush == play) return play;
 
             var countCardValues = GeneratePlayDictionary();
             foreach (var card in hand.Cards)
@@ -40,8 +37,10 @@ namespace Poker
                 countCardValues.Remove(source);
             }
 
-            if (IsFourOfAKind(countCardValues)) play = PokerPlay.FourOfAKind;
+            if (IsStraightFlush(hand, countCardValues)) play = PokerPlay.StraightFlush;
+            else if (IsFourOfAKind(countCardValues)) play = PokerPlay.FourOfAKind;
             else if (IsFullHouse(countCardValues)) play = PokerPlay.FullHouse;
+            else if (IsFlush(hand)) play = PokerPlay.Flush;
             else if (IsStraight(countCardValues)) play = PokerPlay.Straight;
             else if (IsThreeOfAKind(countCardValues)) play = PokerPlay.ThreeOfAKind;
             else if (IsTwoPairs(countCardValues)) play = PokerPlay.TwoPair;
@@ -115,6 +114,11 @@ namespace Poker
         private static bool IsFourOfAKind(Dictionary<CardValue, int> countCardValues)
         {
             return countCardValues.Any(count => count.Value == 4);
+        }
+
+        private static bool IsStraightFlush(Hand hand, Dictionary<CardValue, int> countCardValues)
+        {
+            return IsFlush(hand) && IsStraight(countCardValues);
         }
     }
 }

@@ -161,5 +161,32 @@ namespace PokerTest
             var play = PokerRules.CheckPlay(_hand);
             Assert.AreEqual(PokerRules.PokerPlay.FourOfAKind, play);
         }
+
+        [Test(Description = "This test checks a hand for straight")]
+        [TestCase(CardValue.Two, CardSuit.Spades, CardValue.Three, CardSuit.Spades, CardValue.Four, CardSuit.Spades,
+            CardValue.Five, CardSuit.Spades, CardValue.Six, CardSuit.Spades)]
+        [TestCase(CardValue.Four, CardSuit.Spades, CardValue.Three, CardSuit.Spades, CardValue.Two, CardSuit.Spades,
+            CardValue.Five, CardSuit.Spades, CardValue.Six, CardSuit.Spades)]
+        [TestCase(CardValue.Ace, CardSuit.Spades, CardValue.King, CardSuit.Spades, CardValue.Queen, CardSuit.Spades,
+            CardValue.Jack, CardSuit.Spades, CardValue.Ten, CardSuit.Spades)]
+        [TestCase(CardValue.Two, CardSuit.Spades, CardValue.Three, CardSuit.Spades, CardValue.Four, CardSuit.Spades,
+            CardValue.Five, CardSuit.Spades, CardValue.Ace, CardSuit.Spades)]
+        public void TestHandForAStraightFlush(CardValue cardValue1, CardSuit cardSuit1, CardValue cardValue2, CardSuit cardSuit2,
+            CardValue cardValue3, CardSuit cardSuit3, CardValue cardValue4, CardSuit cardSuit4,
+                CardValue cardValue5, CardSuit cardSuit5)
+        {
+            var card1 = new Card(cardValue1, cardSuit1);
+            _hand.AddCard(card1);
+            var card2 = new Card(cardValue2, cardSuit2);
+            _hand.AddCard(card2);
+            var card3 = new Card(cardValue3, cardSuit3);
+            _hand.AddCard(card3);
+            var card4 = new Card(cardValue4, cardSuit4);
+            _hand.AddCard(card4);
+            var card5 = new Card(cardValue5, cardSuit5);
+            _hand.AddCard(card5);
+            var play = PokerRules.CheckPlay(_hand);
+            Assert.AreEqual(PokerRules.PokerPlay.StraightFlush, play);
+        }
     }
 }
