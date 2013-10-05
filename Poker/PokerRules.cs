@@ -11,7 +11,8 @@ namespace Poker
         {
             None,
             Pair,
-            TwoPair
+            TwoPair,
+            ThreeOfAKind
         }
 
         public static PokerPlay CheckPlay(Hand hand)
@@ -24,19 +25,15 @@ namespace Poker
             {
                 countCardValues[card.Value]++;
             }
-
-            var pairs = countCardValues.Values.Count(value => 2 == value);
+            foreach (var source in countCardValues.Where(x => x.Value == 0).Select(x => x.Key).ToArray())
+            {
+                countCardValues.Remove(source);
+            }
 
             var play = PokerPlay.None;
-            switch (pairs)
-            {
-                case 2:
-                    play = PokerPlay.TwoPair;
-                    break;
-                case 1:
-                    play = PokerPlay.Pair;
-                    break;
-            }
+            if (isThreeOfAKind(countCardValues)) play = PokerPlay.ThreeOfAKind;
+            else if (isTwoPairs(countCardValues)) play = PokerPlay.TwoPair;
+            else if (isPair(countCardValues)) play = PokerPlay.Pair;
 
             return play;
         }
@@ -45,6 +42,21 @@ namespace Poker
         {
             var dictionary = Enum.GetValues(typeof (CardValue)).Cast<CardValue>().ToDictionary(cardValue => cardValue, value => 0);
             return dictionary;
+        }
+
+        private static bool isPair(Dictionary<CardValue, int> countCardValues)
+        {
+            return 1 == countCardValues.Values.Count(value => 2 == value);
+        }
+
+        private static bool isTwoPairs(Dictionary<CardValue, int> countCardValues)
+        {
+            return 2 == countCardValues.Values.Count(value => 2 == value);
+        }
+
+        private static bool isThreeOfAKind(Dictionary<CardValue, int> countCardValues)
+        {
+            return countCardValues.Any(count => count.Value == 3);
         }
     }
 }
